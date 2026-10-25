@@ -4,9 +4,11 @@ This repository is a debugger-first course for an experienced C++ developer who 
 
 **Problem and concept -> memory representation -> from-scratch implementation -> operations and edge cases -> debugging -> complexity -> STL comparison -> applications -> exercises**
 
-## Phase 1 Scope
+## Project Status
 
-This document defines the curriculum and implementation architecture. It intentionally does not include the topic source files or build scripts yet. The first implementation phase will complete `01_Foundations`; later topics will be added one at a time.
+This repository is being implemented as a runnable C++17 course across all 18 topics. The curriculum, dependency map, build architecture, naming conventions, debugging approach, and test strategy below remain the project blueprint. Each topic will have a runnable navigator, an implementation module, a separate invariant test, and a topic guide. Large topics use a representative implementation plus explicitly identified extension exercises rather than pretending to cover every advanced variant in production depth.
+
+The attached `DSA Notes X CodeWithNishchal 2.pdf` is used as a conceptual reference alongside `prompt.md`. The notes are Java-oriented; examples here are original C++17 implementations and explanations of the same applicable concepts, not copied Java code or PDF prose. Each topic guide identifies direct PDF coverage and project extensions.
 
 ## Curriculum
 
@@ -32,6 +34,26 @@ This document defines the curriculum and implementation architecture. It intenti
 | `18_Problems` | Easy, medium, and advanced exercises grouped by prerequisite/topic; prompts separated from solutions | Practice independently before reading a solution |
 
 Every topic README will answer what problem a structure solves, how it is represented in memory, its operations and complexity, edge cases and common mistakes, how to build/run/debug it, STL alternatives, trade-offs, applications, and exercises. Complexity explanations will say why the bound occurs and distinguish best, average (when meaningful), and worst cases.
+
+## PDF Alignment
+
+PDF page numbers below refer to the attached 422-page document. These are conceptual references, not claims that the PDF uses C++ or prescribes the implementations in this repository.
+
+| Project topics | PDF coverage and how this course uses it |
+| --- | --- |
+| Foundations | Recursion and call-depth/recursion-tree analysis (roughly pp. 27-44) inform the recursive examples and complexity explanations. Ownership, C++ storage duration, templates, and iterators are added for this C++ course. |
+| Arrays and Strings | Array-based examples recur in the early notes and throughout later implementations; string/character examples appear in the early pages and trie material. The course adds explicit C++ array ownership, capacity, invalidation, and `std::string` comparisons. |
+| Linked Lists | No dedicated linked-list section was found in the PDF text. Node ownership, RAII, and list operations are course additions. |
+| Stacks, Queues, Deques | Stack/queue/deque and array-deque examples appear around pp. 122-149; queue-based graph traversal appears in the graph section. Implementations here translate the operations into C++17 and explain the different STL interfaces. |
+| Hash Tables | The notes use Java `HashMap` in examples (notably around pp. 74-84 and in trie discussions), but do not present hash-table collision handling as a complete data-structure lesson. Chaining, probing, load factor, and rehashing are course additions. |
+| Trees and Binary Search Trees | Tree traversal and recursion examples appear around pp. 168-202 and pp. 329-335. The ordered BST invariants, deletion cases, and balancing discussion are extended here. |
+| Heaps and Priority Queues | Heap/heapify examples appear around pp. 234-254, including uses alongside queue-like work. The C++ course adds heap ownership, STL comparisons, and explicit comparator contracts. |
+| Tries | Trie nodes, word insertion, and lookup appear around pp. 287-301. The course reimplements these ideas with C++ ownership and documents alphabet and memory trade-offs. |
+| Graphs and Disjoint Sets | Graph representations and traversal appear around pp. 255-286. Union-Find is not directly covered in the PDF text and is a course extension. |
+| Advanced Data Structures | Fenwick/Binary Indexed Tree material appears around pp. 374-393 and informs the implemented prefix-sum example. AVL/Red-Black concepts, segment trees, sparse tables, LRU caches, and Bloom filters are additional curriculum topics. |
+| STL Data Structures and Problems | The PDF's Java APIs are used only as conceptual comparison points; this course explains the C++ Standard Library contracts independently. Exercises extend the PDF's patterns and are written as original prompts. |
+
+Page ranges are approximate section locations based on extracted PDF text. When a structure is only used in an example or is not covered as a topic, the guide says so rather than implying complete PDF treatment.
 
 ## Repository Architecture
 
@@ -131,7 +153,7 @@ Foundations is a prerequisite for every branch. Arrays, linked lists, trees, has
 - Debug builds are the default learning configuration. The instructions cover Visual Studio multi-configuration generators as well as single-configuration generators such as Ninja; use `Debug` configuration and preserve debug symbols. No external test framework is required initially; a small assertion-based test harness keeps the project dependency-free.
 - Only C++17 features are required by the primary examples. A newer-standard alternative may be discussed in documentation, but it does not raise the baseline.
 
-Expected usage once the first implementation phase supplies the build files:
+Build and run the complete course:
 
 ```powershell
 # Configure and build the whole repository in Debug mode
@@ -144,9 +166,18 @@ ctest --test-dir build -C Debug --output-on-failure
 # Configure/build just one topic from its own directory
 cmake -S 01_Foundations -B build/foundations -DCMAKE_BUILD_TYPE=Debug
 cmake --build build/foundations --config Debug
+ctest --test-dir build/foundations -C Debug --output-on-failure
+
+# Run a topic and select one example
+./build/01_Foundations/foundations --help
+./build/01_Foundations/foundations recursion
 ```
 
 For Visual Studio generators, `--config Debug` selects the configuration; `CMAKE_BUILD_TYPE` is ignored by multi-configuration generators. Each topic README will give exact commands for its executable and examples.
+
+### Qt Creator / qmake
+
+`LearnDataStructure.pro` is the root `TEMPLATE = subdirs` project. Its `SUBDIRS` list includes each topic directory, and qmake resolves each child project as `<topic>/<topic>.pro`. Every child `.pro` builds that topic's standalone C++17 console executable; open a child `.pro` directly in Qt Creator to work on one topic. Select a Qt Creator kit with a C++17-capable compiler. Qt libraries are not required by the examples. CMake remains the route for the registered automated tests.
 
 ## Naming and File Conventions
 
@@ -189,4 +220,4 @@ Tests should be deterministic and small enough to debug interactively. More adva
 
 Foundations comes first because every later implementation relies on its shared mental model: complexity describes operation cost; pointers and references express relationships; stack/heap and lifetime explain where objects live and who owns them; recursion and templates recur throughout trees, graphs, and reusable containers; iterators bridge implementations to the STL. Establishing these ideas first makes later pointer mutations and complexity trade-offs easier to reason about and debug.
 
-The first implementation phase will produce the complete `01_Foundations` folder: its topic README, CMake file, navigator, focused example classes and source files, and separate automated tests. It will demonstrate the concepts and provide expected output, build/run commands, debugger checkpoints, and exercises before the next topic begins.
+Every topic guide documents the concepts and representative implementation, expected behavior, build/run commands, debugger checkpoints, complexity, STL connection, applications, and exercises. `18_Problems` collects prompts separately from compact reference solutions.
