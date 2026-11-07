@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+using namespace std;
 void ConstantsExample::run()
 {
     // Demonstrates values that must not be changed after initialization.
@@ -22,4 +23,16 @@ void ConstantsExample::run()
     // Good practice: make values const by default; use constexpr when the
     // value is suitable and genuinely needed at compile time.
     // Expected output: One box contains 4 items and costs $10.
+
+    constexpr double PI = 3.14;
+    const int MAXRANGE = 10;
+
+    //circle area formula: PI*r2
+    int r = 3;
+    for (int i = 0; i <= MAXRANGE; i++)
+    {
+        r = r + i;
+        double area = PI*r*r;
+        cout<<"radius: "<<r<<" area: "<<area<<endl;
+    }
 }

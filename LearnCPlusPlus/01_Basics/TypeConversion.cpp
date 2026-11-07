@@ -12,9 +12,14 @@ void TypeConversionExample::run()
     const double preciseValue{7.9};
     const int explicitWholeNumber{static_cast<int>(preciseValue)};
 
+    const int implicitWholeNumber{(int)preciseValue};
+
     std::cout << "Implicit int-to-double conversion: " << implicitDecimal
               << '\n';
     std::cout << "Explicit double-to-int conversion: " << explicitWholeNumber
+              << '\n';
+
+    std::cout << "implicit double-to-int conversion: " << implicitWholeNumber
               << '\n';
 
     // Converting a floating-point value to int discards the fractional part;

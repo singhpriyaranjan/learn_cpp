@@ -3,6 +3,9 @@
 #include <iostream>
 #include <string>
 
+const std::string globalMessage{"The global object is still alive."};
+const std::string innerMessage{"ggggs."};
+
 void ScopeAndLifetimeExample::run()
 {
     // Demonstrates block scope and automatic object lifetime. A local object
@@ -13,10 +16,13 @@ void ScopeAndLifetimeExample::run()
 
     {
         const std::string innerMessage{"The inner object lives in this block."};
+        const std::string outerMessage{"The outer object is still alive in inner scope."};
         std::cout << innerMessage << '\n';
+        std::cout << outerMessage << '\n';
     } // innerMessage's lifetime ends here.
 
     std::cout << outerMessage << '\n';
+    std::cout << innerMessage <<innerMessage<< '\n';
 
     // The inner object is destroyed when its scope ends, before run() returns.
     // Common mistake: returning a reference or pointer to a local object that
@@ -26,4 +32,6 @@ void ScopeAndLifetimeExample::run()
     // Scope and lifetime: beginning the example.
     // The inner object lives in this block.
     // The outer object is still alive.
+    std::cout << "globalMessage: "<<globalMessage<<std::endl;
+
 }

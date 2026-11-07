@@ -9,7 +9,7 @@ void VariablesExample::run()
     // keep values and refer to them by meaningful names.
     // Basic syntax: type name{initial_value};
     // Braces initialize directly and avoid many accidental narrowing cases.
-    int lessonNumber{1};
+    int lessonNumber{1}; //int lessonNumber = 1;
     double completion{0.25};
     std::string lessonName{"Variables and initialization"};
 
